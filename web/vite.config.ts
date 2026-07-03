@@ -1,5 +1,6 @@
 import {defineConfig, loadEnv, type Plugin} from 'vite'
 import react from '@vitejs/plugin-react'
+import {fetchAboutPageFromSanity} from './api/sanity-about.js'
 import {fetchProjectsFromSanity} from './api/sanity-projects.js'
 import {fetchServicesPageFromSanity} from './api/sanity-services.js'
 
@@ -57,6 +58,31 @@ function contentApiPlugin(): Plugin {
         } catch (error) {
           const message =
             error instanceof Error ? error.message : 'Unable to load services content from Sanity.'
+
+          res.statusCode = 500
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify({message}))
+        }
+      })
+
+      server.middlewares.use('/api/about', async (req, res) => {
+        if (req.method !== 'GET') {
+          res.statusCode = 405
+          res.setHeader('Allow', 'GET')
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify({message: 'Method not allowed.'}))
+          return
+        }
+
+        try {
+          const aboutPage = await fetchAboutPageFromSanity(sanityConfig)
+
+          res.statusCode = 200
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify({aboutPage}))
+        } catch (error) {
+          const message =
+            error instanceof Error ? error.message : 'Unable to load about content from Sanity.'
 
           res.statusCode = 500
           res.setHeader('Content-Type', 'application/json')

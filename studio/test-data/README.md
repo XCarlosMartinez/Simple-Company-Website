@@ -3,6 +3,7 @@
 This folder contains a seed script that creates 9 test `project` documents in Sanity. It also uploads generated placeholder images so the Projects page can be tested with a full 3-column grid.
 
 It also contains a seed script for the Services page singleton content.
+It also contains a seed script for the About page singleton content.
 
 ## Requirements
 
@@ -31,4 +32,10 @@ To seed the Services page content:
 node test-data/seed-services-page.mjs
 ```
 
-The scripts are safe to run more than once. Project test data is matched by slug, and Services page content is replaced by the `servicesPage` singleton ID.
+To seed the About page content:
+
+```bash
+node test-data/seed-about-page.mjs
+```
+
+The scripts are safe to run more than once. Project test data is matched by slug, and singleton page content is replaced by the `servicesPage` and `aboutPage` IDs.
