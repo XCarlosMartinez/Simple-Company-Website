@@ -1,47 +1,99 @@
-# React Sanity Template
+# Simple Company Website
 
-A starter workspace for projects with a Vite React frontend and a standalone Sanity Studio.
+A production-ready company website built with a Vite React frontend, a standalone Sanity Studio, and Vercel API routes.
 
-## Structure
+The site includes routed pages for Home, About Us, Services, Projects, and Contact Us. Page content is managed in Sanity, while the contact form uses a serverless API route prepared for Resend email delivery and Cloudflare Turnstile bot protection.
+
+## Project Structure
 
 ```text
-react-sanity-template/
-  web/                  # Vite + React app
-    src/sanity/         # Sanity client, image builder, and GROQ queries
+Simple Company Website/
+  web/                  # Vite + React website
+    api/                # Vercel serverless API routes
+    src/                # React pages, components, and Sanity image helpers
   studio/               # Standalone Sanity Studio
-    schemaTypes/
-      documents/        # Document schemas
-      objects/          # Reusable object schemas
-      blocks/           # Portable Text and block schemas
+    schemaTypes/        # Home, About, Services, and Project schemas
+    test-data/          # Optional seed scripts for starter content
 ```
 
-## Setup
+## Pages
 
-1. Install dependencies from the root:
+- Home: Sanity-managed hero, service preview, featured projects, industries, and CTA.
+- About Us: Sanity-managed company heading, image, subheading, and paragraph.
+- Services: Sanity-managed services, industries, and past projects summary.
+- Projects: Sanity-managed project grid with images and descriptions.
+- Contact Us: Validated contact form with Resend and Turnstile support.
 
-   ```bash
-   npm install
-   ```
+## Local Setup
 
-2. Copy the example env files:
+Install dependencies from the root:
 
-   ```bash
-   cp web/.env.example web/.env
-   cp studio/.env.example studio/.env
-   ```
+```bash
+npm install
+```
 
-3. Fill in your Sanity project ID and dataset in both env files.
+Run the website:
 
-4. Start either app:
+```bash
+npm run dev:web
+```
 
-   ```bash
-   npm run dev:web
-   npm run dev:studio
-   ```
+Run the Sanity Studio:
 
-## Notes
+```bash
+npm run dev:studio
+```
 
-- The Studio is standalone, which keeps Sanity builds and updates separate from the frontend.
-- Frontend Sanity code lives in `web/src/sanity`.
-- Studio schemas are grouped by documents, objects, and blocks so the template can grow cleanly.
-- This folder intentionally does not include Git history or installed dependencies.
+## Environment Variables
+
+The website expects Sanity configuration in `web/.env` and Studio configuration in `studio/.env`.
+
+For the website and Vercel deployment:
+
+```bash
+VITE_SANITY_PROJECT_ID=
+VITE_SANITY_DATASET=production
+VITE_SANITY_API_VERSION=2026-07-02
+RESEND_API_KEY=
+CONTACT_TO_EMAIL=
+CONTACT_FROM_EMAIL=
+VITE_TURNSTILE_SITE_KEY=
+TURNSTILE_SECRET_KEY=
+```
+
+For the Studio:
+
+```bash
+SANITY_STUDIO_PROJECT_ID=
+SANITY_STUDIO_DATASET=production
+SANITY_STUDIO_TITLE=
+SANITY_STUDIO_API_VERSION=2026-07-02
+```
+
+For local seed scripts only:
+
+```bash
+SANITY_AUTH_TOKEN=
+```
+
+## Build Checks
+
+Build the website:
+
+```bash
+npm run build:web
+```
+
+Build the Studio:
+
+```bash
+npm run build:studio
+```
+
+## Hosting
+
+The website is prepared for Vercel. Use `web` as the frontend workspace and keep the API files in `web/api` available to Vercel as serverless functions.
+
+Before hosting, add the website environment variables in Vercel. The public `VITE_` variables are used by the browser build, while Resend, Turnstile secret, and contact email variables must remain server-side only.
+
+The Sanity Studio can be run locally during content editing or deployed separately with Sanity if desired.

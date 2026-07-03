@@ -1,75 +1,74 @@
-# React + TypeScript + Vite
+# Web App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This workspace contains the Vite React website for Simple Company.
 
-Currently, two official plugins are available:
+## What It Includes
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React Router page routing.
+- Responsive navbar with a mobile popup menu.
+- Sanity-powered Home, About Us, Services, and Projects pages.
+- Contact form validation.
+- Vercel API routes for Sanity content and contact form email delivery.
+- In-memory client caching to reduce visible loading stutter when navigating between pages.
 
-## React Compiler
+## Routes
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- `/` - Home
+- `/about-us` - About Us
+- `/services` - Services
+- `/projects` - Projects
+- `/contact-us` - Contact Us
 
-## Expanding the ESLint configuration
+## API Routes
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+The files in `web/api` are used by Vercel and mirrored by Vite middleware during local development:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- `/api/home`
+- `/api/about`
+- `/api/services`
+- `/api/projects`
+- `/api/contact`
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Environment Variables
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Set these in `web/.env` for local development and in Vercel for production:
 
+```bash
+VITE_SANITY_PROJECT_ID=
+VITE_SANITY_DATASET=production
+VITE_SANITY_API_VERSION=2026-07-02
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Contact form email and captcha variables:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+RESEND_API_KEY=
+CONTACT_TO_EMAIL=
+CONTACT_FROM_EMAIL=
+VITE_TURNSTILE_SITE_KEY=
+TURNSTILE_SECRET_KEY=
 ```
+
+`VITE_TURNSTILE_SITE_KEY` is public and used by the browser. `TURNSTILE_SECRET_KEY`, `RESEND_API_KEY`, and email values should only be set as server-side Vercel environment variables.
+
+## Commands
+
+From the project root:
+
+```bash
+npm run dev:web
+npm run build:web
+npm run lint:web
+```
+
+From this workspace:
+
+```bash
+npm run dev
+npm run build
+npm run lint
+```
+
+## Deployment Notes
+
+Deploy the website to Vercel with the required environment variables configured. The Contact Us page will render without Turnstile configured, but production spam protection requires Cloudflare Turnstile site and secret keys.

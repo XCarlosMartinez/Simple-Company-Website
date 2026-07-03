@@ -1,11 +1,62 @@
-# Sanity Blogging Content Studio
+# Sanity Studio
 
-Congratulations, you have now installed the Sanity Content Studio, an open-source real-time content editing environment connected to the Sanity backend.
+This workspace contains the standalone Sanity Studio for managing the website content.
 
-Now you can do the following things:
+## Content Models
 
-- [Read “getting started” in the docs](https://www.sanity.io/docs/introduction/getting-started?utm_source=readme)
-- Check out the example frontend: [React/Next.js](https://github.com/sanity-io/tutorial-sanity-blog-react-next)
-- [Read the blog post about this template](https://www.sanity.io/blog/build-your-own-blog-with-sanity-and-next-js?utm_source=readme)
-- [Join the Sanity community](https://www.sanity.io/community/join?utm_source=readme)
-- [Extend and build plugins](https://www.sanity.io/docs/content-studio/extending?utm_source=readme)
+The Studio currently manages:
+
+- `homePage` - Home page hero, preview section copy, display limits, and final CTA.
+- `aboutPage` - About page company name, image, heading, and body copy.
+- `servicesPage` - Services, industries, and past projects summary.
+- `project` - Project title, slug, image, description, and sort order.
+
+## Environment Variables
+
+Set these in `studio/.env`:
+
+```bash
+SANITY_STUDIO_PROJECT_ID=
+SANITY_STUDIO_DATASET=production
+SANITY_STUDIO_TITLE=
+SANITY_STUDIO_API_VERSION=2026-07-02
+```
+
+Seed scripts also require a write token in the current terminal session:
+
+```bash
+SANITY_AUTH_TOKEN=
+```
+
+## Commands
+
+From the project root:
+
+```bash
+npm run dev:studio
+npm run build:studio
+```
+
+From this workspace:
+
+```bash
+npm run dev
+npm run build
+npm run deploy
+```
+
+## Seed Data
+
+Optional seed scripts live in `studio/test-data`. They can create starter content for the singleton pages and test projects for the Projects page.
+
+See `studio/test-data/README.md` for the exact commands.
+
+## Deployment Notes
+
+The Studio can be used locally or deployed with Sanity using:
+
+```bash
+npm run deploy
+```
+
+The website can still be hosted on Vercel while the Studio is hosted separately by Sanity.

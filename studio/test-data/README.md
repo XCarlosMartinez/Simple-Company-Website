@@ -1,48 +1,66 @@
-# Project Test Data
+# Sanity Seed Data
 
-This folder contains a seed script that creates 9 test `project` documents in Sanity. It also uploads generated placeholder images so the Projects page can be tested with a full 3-column grid.
+This folder contains optional seed scripts for starter content and testing.
 
-It also contains a seed script for the Services page singleton content.
-It also contains a seed script for the About page singleton content.
-It also contains a seed script for the Home page singleton content.
+## Scripts
+
+- `seed-home-page.mjs` creates or replaces the `homePage` singleton.
+- `seed-about-page.mjs` creates or replaces the `aboutPage` singleton.
+- `seed-services-page.mjs` creates or replaces the `servicesPage` singleton.
+- `seed-projects.mjs` creates 9 test `project` documents and uploads generated placeholder images.
+
+The singleton scripts are safe to run more than once because they use fixed document IDs: `homePage`, `aboutPage`, and `servicesPage`.
+
+The project seed script is also safe to rerun. It matches test projects by slug and updates them instead of creating endless duplicates.
 
 ## Requirements
 
-Set a Sanity write token before running the script:
-
-```bash
-SANITY_AUTH_TOKEN=your_write_token
-```
-
-The script reads your existing Studio/Web env files for the project ID and dataset:
+Run scripts from the `studio` folder. The scripts read Sanity project settings from:
 
 - `studio/.env`
 - `web/.env`
+
+You also need a Sanity write token in the current terminal session.
+
+PowerShell:
+
+```powershell
+$env:SANITY_AUTH_TOKEN="your_write_token"
+```
+
+Command Prompt:
+
+```cmd
+set SANITY_AUTH_TOKEN=your_write_token
+```
+
+If the project ID is not available in an env file, set it in the same terminal session:
+
+PowerShell:
+
+```powershell
+$env:SANITY_STUDIO_PROJECT_ID="epkwq0nq"
+```
+
+Command Prompt:
+
+```cmd
+set SANITY_STUDIO_PROJECT_ID=epkwq0nq
+```
 
 ## Run
 
 From the `studio` folder:
 
 ```bash
+node test-data/seed-home-page.mjs
+node test-data/seed-about-page.mjs
+node test-data/seed-services-page.mjs
 node test-data/seed-projects.mjs
 ```
 
-To seed the Services page content:
-
-```bash
-node test-data/seed-services-page.mjs
-```
-
-To seed the About page content:
-
-```bash
-node test-data/seed-about-page.mjs
-```
-
-To seed the Home page content:
+Run only the scripts you need. For example, if you only want starter Home page content, run:
 
 ```bash
 node test-data/seed-home-page.mjs
 ```
-
-The scripts are safe to run more than once. Project test data is matched by slug, and singleton page content is replaced by the `servicesPage`, `aboutPage`, and `homePage` IDs.
