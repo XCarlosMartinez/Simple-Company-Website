@@ -22,6 +22,8 @@ type ServicesPageContent = {
   }
 }
 
+let cachedServicesContent: ServicesPageContent | null = null
+
 function ContentListSection({
   title,
   section,
@@ -54,12 +56,14 @@ function ContentListSection({
 }
 
 function Services() {
-  const [content, setContent] = useState<ServicesPageContent | null>(null)
-  const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
+  const [content, setContent] = useState<ServicesPageContent | null>(cachedServicesContent)
+  const [status, setStatus] = useState<'loading' | 'success' | 'error'>(
+    cachedServicesContent ? 'success' : 'loading',
+  )
   const [errorMessage, setErrorMessage] = useState('')
 
   const loadServices = useCallback(async () => {
-    setStatus('loading')
+    setStatus((current) => (current === 'success' ? current : 'loading'))
     setErrorMessage('')
 
     try {
@@ -73,18 +77,18 @@ function Services() {
         throw new Error(result.message || 'Services content could not be loaded.')
       }
 
-      setContent(result.servicesPage || null)
+      cachedServicesContent = result.servicesPage || null
+      setContent(cachedServicesContent)
       setStatus('success')
     } catch (error) {
-      setContent(null)
-      setStatus('error')
+      setStatus(content ? 'success' : 'error')
       setErrorMessage(
         error instanceof Error
           ? error.message
           : 'Services content could not be loaded.',
       )
     }
-  }, [])
+  }, [content])
 
   useEffect(() => {
     loadServices()

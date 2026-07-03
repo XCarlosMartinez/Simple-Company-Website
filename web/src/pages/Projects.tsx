@@ -11,13 +11,17 @@ type Project = {
   sortOrder?: number
 }
 
+let cachedProjects: Project[] = []
+
 function Projects() {
-  const [projects, setProjects] = useState<Project[]>([])
-  const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
+  const [projects, setProjects] = useState<Project[]>(cachedProjects)
+  const [status, setStatus] = useState<'loading' | 'success' | 'error'>(
+    cachedProjects.length ? 'success' : 'loading',
+  )
   const [errorMessage, setErrorMessage] = useState('')
 
   const loadProjects = useCallback(async () => {
-    setStatus('loading')
+    setStatus((current) => (current === 'success' ? current : 'loading'))
     setErrorMessage('')
 
     try {
@@ -28,18 +32,18 @@ function Projects() {
         throw new Error(result.message || 'Sanity projects could not be loaded.')
       }
 
-      setProjects(result.projects || [])
+      cachedProjects = result.projects || []
+      setProjects(cachedProjects)
       setStatus('success')
     } catch (error) {
-      setProjects([])
-      setStatus('error')
+      setStatus(projects.length ? 'success' : 'error')
       setErrorMessage(
         error instanceof Error
           ? error.message
           : 'Sanity projects could not be loaded.',
       )
     }
-  }, [])
+  }, [projects.length])
 
   useEffect(() => {
     loadProjects()

@@ -1,5 +1,6 @@
 import {Route, Routes} from 'react-router-dom'
 import NavBar from './components/NavBar'
+import ScrollToTop from './components/ScrollToTop'
 import AboutUs from './pages/AboutUs'
 import ContactUs from './pages/ContactUs'
 import Home from './pages/Home'
@@ -11,6 +12,7 @@ function App() {
   return (
     <>
       <NavBar />
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about-us" element={<AboutUs />} />

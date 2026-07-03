@@ -4,6 +4,7 @@ This folder contains a seed script that creates 9 test `project` documents in Sa
 
 It also contains a seed script for the Services page singleton content.
 It also contains a seed script for the About page singleton content.
+It also contains a seed script for the Home page singleton content.
 
 ## Requirements
 
@@ -38,4 +39,10 @@ To seed the About page content:
 node test-data/seed-about-page.mjs
 ```
 
-The scripts are safe to run more than once. Project test data is matched by slug, and singleton page content is replaced by the `servicesPage` and `aboutPage` IDs.
+To seed the Home page content:
+
+```bash
+node test-data/seed-home-page.mjs
+```
+
+The scripts are safe to run more than once. Project test data is matched by slug, and singleton page content is replaced by the `servicesPage`, `aboutPage`, and `homePage` IDs.
