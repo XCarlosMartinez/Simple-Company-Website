@@ -1,12 +1,18 @@
 import {defineConfig, loadEnv, type Plugin} from 'vite'
 import react from '@vitejs/plugin-react'
 import {fetchProjectsFromSanity} from './api/sanity-projects.js'
+import {fetchServicesPageFromSanity} from './api/sanity-services.js'
 
-function projectsApiPlugin(): Plugin {
+function contentApiPlugin(): Plugin {
   return {
-    name: 'projects-api',
+    name: 'content-api',
     configureServer(server) {
       const env = loadEnv(server.config.mode, process.cwd(), '')
+      const sanityConfig = {
+        projectId: env.SANITY_PROJECT_ID || env.VITE_SANITY_PROJECT_ID,
+        dataset: env.SANITY_DATASET || env.VITE_SANITY_DATASET,
+        apiVersion: env.SANITY_API_VERSION || env.VITE_SANITY_API_VERSION,
+      }
 
       server.middlewares.use('/api/projects', async (req, res) => {
         if (req.method !== 'GET') {
@@ -18,11 +24,7 @@ function projectsApiPlugin(): Plugin {
         }
 
         try {
-          const projects = await fetchProjectsFromSanity({
-            projectId: env.SANITY_PROJECT_ID || env.VITE_SANITY_PROJECT_ID,
-            dataset: env.SANITY_DATASET || env.VITE_SANITY_DATASET,
-            apiVersion: env.SANITY_API_VERSION || env.VITE_SANITY_API_VERSION,
-          })
+          const projects = await fetchProjectsFromSanity(sanityConfig)
 
           res.statusCode = 200
           res.setHeader('Content-Type', 'application/json')
@@ -36,11 +38,36 @@ function projectsApiPlugin(): Plugin {
           res.end(JSON.stringify({message}))
         }
       })
+
+      server.middlewares.use('/api/services', async (req, res) => {
+        if (req.method !== 'GET') {
+          res.statusCode = 405
+          res.setHeader('Allow', 'GET')
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify({message: 'Method not allowed.'}))
+          return
+        }
+
+        try {
+          const servicesPage = await fetchServicesPageFromSanity(sanityConfig)
+
+          res.statusCode = 200
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify({servicesPage}))
+        } catch (error) {
+          const message =
+            error instanceof Error ? error.message : 'Unable to load services content from Sanity.'
+
+          res.statusCode = 500
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify({message}))
+        }
+      })
     },
   }
 }
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [projectsApiPlugin(), react()],
+  plugins: [contentApiPlugin(), react()],
 })

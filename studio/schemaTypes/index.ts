@@ -1,3 +1,4 @@
 import project from './documents/project'
+import servicesPage from './documents/servicesPage'
 
-export const schemaTypes = [project]
+export const schemaTypes = [project, servicesPage]
