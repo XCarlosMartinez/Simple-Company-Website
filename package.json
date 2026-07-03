@@ -6,8 +6,8 @@
     "studio"
   ],
   "scripts": {
-    "dev:web": "npm run dev --workspace web",
-    "dev:studio": "npm run dev --workspace studio",
+    "dev:web": "npm run dev --workspace web -- --host 0.0.0.0",
+    "dev:studio": "npm run dev --workspace studio -- --host 0.0.0.0",
     "build:web": "npm run build --workspace web",
     "build:studio": "npm run build --workspace studio",
     "lint:web": "npm run lint --workspace web"
