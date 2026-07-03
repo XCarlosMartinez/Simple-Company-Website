@@ -1,4 +1,4 @@
-import {fetchHomePageFromSanity} from './sanity-home'
+import {fetchHomePageFromSanity} from './sanity-home.js'
 
 export default async function handler(req: any, res: any) {
   if (req.method !== 'GET') {

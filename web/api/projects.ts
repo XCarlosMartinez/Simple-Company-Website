@@ -1,4 +1,4 @@
-import {fetchProjectsFromSanity} from './sanity-projects'
+import {fetchProjectsFromSanity} from './sanity-projects.js'
 
 export default async function handler(req: any, res: any) {
   if (req.method !== 'GET') {
