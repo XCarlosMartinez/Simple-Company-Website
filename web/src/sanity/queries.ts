@@ -1,19 +1,8 @@
-export const postsQuery = `*[_type == "post" && defined(slug.current)] | order(publishedAt desc) {
+export const projectsQuery = `*[_type == "project"] | order(sortOrder asc, _createdAt desc) {
   _id,
   title,
-  slug,
-  publishedAt,
+  "slug": slug.current,
   mainImage,
-  author->{name, image}
-}`
-
-export const postBySlugQuery = `*[_type == "post" && slug.current == $slug][0] {
-  _id,
-  title,
-  slug,
-  publishedAt,
-  mainImage,
-  body,
-  author->{name, image},
-  categories[]->{title}
+  description,
+  sortOrder
 }`

@@ -8,7 +8,7 @@
 }
 
 .navbar {
-  width: min(1120px, calc(100% - 40px));
+  width: min(var(--content-width), calc(100% - 40px));
   margin: 0 auto;
   min-height: 72px;
   display: flex;
@@ -60,7 +60,7 @@
 }
 
 .page-section {
-  width: min(1120px, calc(100% - 40px));
+  width: min(var(--content-width), calc(100% - 40px));
   margin: 0 auto;
   padding: 96px 0;
   text-align: left;
@@ -237,6 +237,105 @@
   background: #fee2e2;
 }
 
+.projects-section {
+  display: grid;
+  gap: 40px;
+}
+
+.projects-intro {
+  max-width: 680px;
+}
+
+.projects-intro h1 {
+  margin-bottom: 18px;
+}
+
+.projects-intro p:not(.eyebrow) {
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  line-height: 1.55;
+}
+
+.projects-status {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-h);
+  background: var(--social-bg);
+}
+
+.projects-status.error {
+  color: #991b1b;
+  border-color: #fecaca;
+  background: #fee2e2;
+}
+
+.projects-status small {
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.projects-status button {
+  border: 0;
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: #ffffff;
+  background: #7c2dff;
+  font: 700 14px/1 var(--sans);
+  cursor: pointer;
+}
+
+.projects-status button:hover {
+  background: #6821d9;
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 2.5vw, 32px);
+  align-items: stretch;
+}
+
+.project-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+}
+
+.project-image-wrap {
+  aspect-ratio: 10 / 7;
+  background: var(--social-bg);
+}
+
+.project-image-wrap img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-card-body {
+  display: grid;
+  gap: 10px;
+  padding: clamp(18px, 2vw, 24px);
+}
+
+.project-card h2 {
+  margin: 0;
+  font-size: clamp(1.125rem, 2vw, 1.35rem);
+  line-height: 1.2;
+}
+
+.project-card p {
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
 @media (max-width: 720px) {
   .navbar {
     min-height: auto;
@@ -273,5 +372,15 @@
 
   .contact-form {
     padding: 20px;
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 721px) and (max-width: 960px) {
+  .projects-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
