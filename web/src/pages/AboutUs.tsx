@@ -1,6 +1,7 @@
 import {useCallback, useEffect, useState} from 'react'
 import type {SanityImageSource} from '@sanity/image-url/lib/types/types'
 import {urlFor} from '../sanity/image'
+import {readApiResponse} from '../utils/apiResponse'
 
 type AboutPageContent = {
   companyName?: string
@@ -31,10 +32,10 @@ function AboutUs() {
 
     try {
       const response = await fetch('/api/about')
-      const result = (await response.json()) as {
+      const result = await readApiResponse<{
         aboutPage?: AboutPageContent | null
         message?: string
-      }
+      }>(response)
 
       if (!response.ok) {
         throw new Error(result.message || 'About content could not be loaded.')

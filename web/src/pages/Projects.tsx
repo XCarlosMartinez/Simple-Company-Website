@@ -1,6 +1,7 @@
 import {useCallback, useEffect, useState} from 'react'
 import type {SanityImageSource} from '@sanity/image-url/lib/types/types'
 import {urlFor} from '../sanity/image'
+import {readApiResponse} from '../utils/apiResponse'
 
 type Project = {
   _id: string
@@ -26,7 +27,7 @@ function Projects() {
 
     try {
       const response = await fetch('/api/projects')
-      const result = (await response.json()) as {projects?: Project[]; message?: string}
+      const result = await readApiResponse<{projects?: Project[]; message?: string}>(response)
 
       if (!response.ok) {
         throw new Error(result.message || 'Sanity projects could not be loaded.')

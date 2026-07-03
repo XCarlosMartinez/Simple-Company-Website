@@ -2,6 +2,7 @@ import {useCallback, useEffect, useMemo, useState} from 'react'
 import type {SanityImageSource} from '@sanity/image-url/lib/types/types'
 import {Link} from 'react-router-dom'
 import {urlFor} from '../sanity/image'
+import {readApiResponse} from '../utils/apiResponse'
 
 type Cta = {
   label?: string
@@ -139,18 +140,18 @@ function Home() {
         fetch('/api/projects'),
       ])
 
-      const homeResult = (await homeResponse.json()) as {
+      const homeResult = await readApiResponse<{
         homePage?: HomePageContent | null
         message?: string
-      }
-      const servicesResult = (await servicesResponse.json()) as {
+      }>(homeResponse)
+      const servicesResult = await readApiResponse<{
         servicesPage?: ServicesPageContent | null
         message?: string
-      }
-      const projectsResult = (await projectsResponse.json()) as {
+      }>(servicesResponse)
+      const projectsResult = await readApiResponse<{
         projects?: Project[]
         message?: string
-      }
+      }>(projectsResponse)
 
       if (!homeResponse.ok) {
         throw new Error(homeResult.message || 'Home page content could not be loaded.')

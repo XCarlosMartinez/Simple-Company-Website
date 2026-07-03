@@ -1,5 +1,6 @@
 import {useCallback, useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
+import {readApiResponse} from '../utils/apiResponse'
 
 type ServiceItem = {
   _key: string
@@ -68,10 +69,10 @@ function Services() {
 
     try {
       const response = await fetch('/api/services')
-      const result = (await response.json()) as {
+      const result = await readApiResponse<{
         servicesPage?: ServicesPageContent | null
         message?: string
-      }
+      }>(response)
 
       if (!response.ok) {
         throw new Error(result.message || 'Services content could not be loaded.')
